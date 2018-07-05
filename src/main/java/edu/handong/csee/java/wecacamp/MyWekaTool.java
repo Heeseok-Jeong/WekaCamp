@@ -60,12 +60,11 @@ public class MyWekaTool {
 		// (5) Show prediction results
 			int i=0;
 			for(Prediction prediction:eval.predictions()) {
-				prediction.predicted();
-//				String predictedValue = getClassValue(trainingData,prediction.predicted());
-//				System.out.println("Instance " + (++i) + " " + predictedValue);
+				String predictedValue = getClassValue(trainingData,prediction.predicted());
+				System.out.println("Instance " + (++i) + " " + predictedValue);
 			}
 
-			//showSummary(eval,testData);
+			showSummary(eval,testData);
 			
 			
 		} catch (FileNotFoundException e) {
@@ -102,7 +101,7 @@ public class MyWekaTool {
 		Instances newData = null;
 		
 		try {
-			filter.setInputFormat(data);
+			//filter.setInputFormat(data);
 
 			// generate new data
 			newData = Filter.useFilter(data, filter);
@@ -116,6 +115,15 @@ public class MyWekaTool {
 	String getClassValue(Instances instances, double index) {
 //		instances.attribute(11).value(0);
 		return instances.attribute(instances.classIndex()).value((int) index);
+	}
+	
+	private void showSummary(Evaluation eval,Instances instances) {
+		for(int i=0; i<instances.classAttribute().numValues();i++) {
+			System.out.println("\n*** Summary of Class " + instances.classAttribute().value(i));
+			System.out.println("Precision " + eval.precision(i));
+			System.out.println("Recall " + eval.recall(i));
+			System.out.println("F-Measure " + eval.fMeasure(i));
+		}
 	}
 
 }
